@@ -20,11 +20,14 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt' # ou 'zulu', 'temurin', etc.
+          distribution: 'adopt'
           java-version: '17'
 
       - name: Build with Gradle
         run: ./gradlew clean build
+
+      - name: Verify JAR file exists
+        run: ls -la build/libs
 
       - name: Docker build
         run: docker build . -t demo:latest
