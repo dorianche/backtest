@@ -28,20 +28,3 @@ jobs:
       - name: Docker build
         run: docker build . -t demo:latest
 
-      - name: Login to Render Docker registry
-        run: echo "${{ secrets.RENDER_REGISTRY_PASSWORD }}" | docker login registry.render.com --username ${{ secrets.RENDER_REGISTRY_USERNAME }} --password-stdin
-
-      - name: Push to Render Docker registry
-        run: |
-          docker tag demo:latest registry.render.com/your-service-name:latest
-          docker push registry.render.com/your-service-name:latest
-
-      - name: Deploy to Render
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-        run: |
-          curl -X POST \
-            -H 'Authorization: Bearer $RENDER_API_KEY' \
-            -H 'Content-Type: application/json' \
-            --data '{"serviceId": "your-render-service-id", "clearCache": false}' \
-            https://api.render.com/v1/services/your-render-service-id/deploys
